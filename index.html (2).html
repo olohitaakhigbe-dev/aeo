@@ -1,0 +1,651 @@
+
+<h2 class="sr-only">Atlas Bench AEO Dashboard — readable font sizes, all data included.</h2>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-size:14px;}
+.w{font-family:var(--font-sans);width:100%;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.atitle{font-size:17px;font-weight:500;color:var(--color-text-primary);display:flex;align-items:center;gap:8px;}
+.beta{font-size:12px;background:#E6F1FB;color:#185FA5;padding:2px 8px;border-radius:20px;font-weight:500;}
+.trial{font-size:13px;color:var(--color-text-secondary);}
+.trial b{color:#993C1D;}
+.nav{display:flex;padding:0 20px;border-bottom:0.5px solid var(--color-border-tertiary);flex-wrap:wrap;}
+.nt{padding:11px 15px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:var(--color-text-secondary);white-space:nowrap;}
+.nt:hover{color:var(--color-text-primary);}
+.nt.on{color:var(--color-text-primary);border-bottom-color:#185FA5;font-weight:500;}
+.tc{display:none;padding:16px 20px;}
+.tc.on{display:block;}
+.stabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.st{padding:5px 13px;font-size:13px;border-radius:20px;cursor:pointer;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);background:transparent;}
+.st.on{background:#E6F1FB;color:#185FA5;border-color:transparent;font-weight:500;}
+.sp{display:none;}
+.sp.on{display:block;}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+.mc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px;}
+.ml{font-size:12px;color:var(--color-text-secondary);margin-bottom:3px;}
+.mv{font-size:24px;font-weight:500;color:var(--color-text-primary);line-height:1.1;}
+.ms{font-size:12px;color:var(--color-text-secondary);margin-top:2px;}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 16px;margin-bottom:12px;}
+.ct{font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px;}
+.cs{font-size:13px;color:var(--color-text-secondary);margin-bottom:10px;}
+.dp{display:inline-block;font-size:12px;background:var(--color-background-secondary);color:var(--color-text-secondary);padding:3px 8px;border-radius:var(--border-radius-md);margin-bottom:8px;}
+.ib{border-left:3px solid #185FA5;background:#E6F1FB;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 13px;margin:10px 0;}
+.ib.warn{border-left-color:#BA7517;background:#FAEEDA;}
+.ib.good{border-left-color:#0F6E56;background:#E1F5EE;}
+.ib.danger{border-left-color:#993C1D;background:#FAECE7;}
+.it{font-size:13px;font-weight:500;margin-bottom:2px;}
+.it.b{color:#0C447C;}.it.warn{color:#854F0B;}.it.good{color:#085041;}.it.danger{color:#993C1D;}
+.ix{font-size:13px;line-height:1.6;}
+.ix.b{color:#185FA5;}.ix.warn{color:#854F0B;}.ix.good{color:#085041;}.ix.danger{color:#993C1D;}
+.legr{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;}
+.li{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--color-text-secondary);}
+.ld{width:10px;height:10px;border-radius:50%;}
+.cb{position:relative;width:100%;height:150px;}
+.cb2{position:relative;width:100%;height:180px;}
+table.dt{width:100%;border-collapse:collapse;font-size:13px;}
+table.dt th{text-align:left;font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.04em;padding:5px 7px;border-bottom:0.5px solid var(--color-border-tertiary);}
+table.dt td{padding:8px 7px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);vertical-align:top;}
+table.dt tr:last-child td{border-bottom:none;}
+.bb{background:var(--color-background-secondary);border-radius:3px;height:6px;width:100%;margin-top:3px;}
+.bf{height:6px;border-radius:3px;}
+.ab{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);cursor:pointer;background:transparent;color:var(--color-text-primary);margin-top:8px;margin-right:5px;}
+.ab:hover{background:var(--color-background-secondary);}
+.ab.sm{font-size:12px;padding:5px 11px;margin-top:4px;}
+.sent-big{font-size:32px;font-weight:500;color:#0F6E56;}
+.psr{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:13px;}
+.psl{width:130px;color:var(--color-text-secondary);}
+.psb{flex:1;height:7px;border-radius:3px;background:var(--color-background-secondary);overflow:hidden;}
+.psf{height:7px;border-radius:3px;}
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.fchip{padding:5px 12px;font-size:12px;border-radius:20px;cursor:pointer;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);background:transparent;}
+.fchip.on{background:#185FA5;color:#fff;border-color:#185FA5;}
+.phdr{display:grid;grid-template-columns:1fr 70px 100px;gap:6px;padding:5px 7px;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:3px;}
+.phc{font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.04em;}
+.phc.c{text-align:center;}
+.plist{display:flex;flex-direction:column;}
+.pr{display:grid;grid-template-columns:1fr 70px 100px;gap:6px;border-bottom:0.5px solid var(--color-border-tertiary);padding:9px 7px;cursor:pointer;align-items:start;}
+.pr:hover{background:var(--color-background-secondary);border-radius:var(--border-radius-md);}
+.pr.hidden{display:none;}
+.ptxt{font-size:13px;color:#185FA5;line-height:1.5;display:flex;align-items:flex-start;gap:5px;}
+.ptxt i{margin-top:2px;flex-shrink:0;font-size:12px;transition:transform .15s;}
+.pv{font-size:13px;font-weight:500;text-align:center;padding-top:1px;}
+.pv.z{color:#993C1D;}.pv.na{color:var(--color-text-secondary);}.pv.hi{color:#0F6E56;font-weight:700;}.pv.lo{color:#BA7517;}
+.pp{text-align:center;}
+.ph-aw{background:#E1F5EE;color:#085041;font-size:11px;padding:2px 6px;border-radius:20px;display:inline-block;}
+.ph-co{background:#E6F1FB;color:#0C447C;font-size:11px;padding:2px 6px;border-radius:20px;display:inline-block;}
+.ph-ev{background:#FAEEDA;color:#854F0B;font-size:11px;padding:2px 6px;border-radius:20px;display:inline-block;}
+.ph-de{background:#FAECE7;color:#993C1D;font-size:11px;padding:2px 6px;border-radius:20px;display:inline-block;}
+.det{display:none;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:14px 16px;margin:4px 0 8px;}
+.det.on{display:block;}
+.dtabs{display:flex;gap:0;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:10px;}
+.dta{padding:7px 14px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:var(--color-text-secondary);}
+.dta.on{color:var(--color-text-primary);border-bottom-color:#185FA5;font-weight:500;}
+.dpn{display:none;font-size:13px;line-height:1.6;color:var(--color-text-secondary);}
+.dpn.on{display:block;}
+.rtag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);background:var(--color-background-primary);margin-left:5px;white-space:nowrap;flex-shrink:0;}
+.rtag.listicle{background:#E6F1FB;color:#185FA5;border-color:transparent;}
+.rtag.guide{background:#E1F5EE;color:#085041;border-color:transparent;}
+.rtag.howto{background:#FAEEDA;color:#854F0B;border-color:transparent;}
+.rtag.product{background:#FAECE7;color:#993C1D;border-color:transparent;}
+.rtag.educational{background:#EEEDFE;color:#3C3489;border-color:transparent;}
+.rtag.social{background:#E1F5EE;color:#085041;border-color:transparent;}
+.rtag.netnew{background:#E6F1FB;color:#0C447C;border-color:transparent;}
+.ri{display:flex;align-items:flex-start;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary);gap:8px;}
+.ri:last-child{border-bottom:none;}
+.rtitle{font-size:13px;color:var(--color-text-primary);line-height:1.4;flex:1;}
+.rec-sidebar{display:flex;gap:14px;}
+.rsidebar{width:175px;flex-shrink:0;}
+.rsitem{padding:9px 11px;border-radius:var(--border-radius-md);cursor:pointer;margin-bottom:4px;}
+.rsitem:hover{background:var(--color-background-secondary);}
+.rsitem.on{background:#E6F1FB;}
+.rsname{font-size:13px;font-weight:500;color:var(--color-text-primary);}
+.rsname.on{color:#185FA5;}
+.rscount{font-size:12px;color:var(--color-text-secondary);}
+.rcontent{flex:1;}
+.rrow{display:flex;align-items:flex-start;justify-content:space-between;padding:9px 6px;border-bottom:0.5px solid var(--color-border-tertiary);gap:8px;}
+.rrow:hover{background:var(--color-background-secondary);border-radius:var(--border-radius-md);}
+.rrow:last-child{border-bottom:none;}
+.rtrow{font-size:13px;color:#185FA5;line-height:1.4;flex:1;}
+.rtypes{display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;}
+.rcat{display:none;}
+.rcat.on{display:block;}
+.rpanel-hd{font-size:13px;color:var(--color-text-secondary);margin-bottom:12px;line-height:1.5;padding:9px 11px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.qcard{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px;}
+.qtitle{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px;line-height:1.4;}
+.qprompt{font-size:12px;color:var(--color-text-secondary);line-height:1.4;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.insight-big{font-size:26px;font-weight:500;}
+.rec-strat{display:flex;gap:10px;padding:12px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.rec-strat:last-child{border-bottom:none;}
+.rn{width:24px;height:24px;border-radius:50%;background:#E6F1FB;color:#185FA5;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.rb{flex:1;}
+.rtl{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px;}
+.rd{font-size:13px;color:var(--color-text-secondary);line-height:1.6;}
+.pb{display:inline-block;font-size:11px;padding:2px 7px;border-radius:20px;margin-left:5px;}
+.pbh{background:#FAECE7;color:#993C1D;}
+.pbm{background:#FAEEDA;color:#854F0B;}
+.pbl{background:#E1F5EE;color:#085041;}
+.oc-row{padding:12px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.oc-row:last-child{border-bottom:none;}
+.oc-num{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:3px;}
+.oc-tip{font-size:13px;color:var(--color-text-secondary);line-height:1.6;margin-top:5px;}
+@media(max-width:560px){.qgrid{grid-template-columns:1fr;}.two-col{grid-template-columns:1fr;}.pr{grid-template-columns:1fr 60px;}.phdr{grid-template-columns:1fr 60px;}.pp{display:none;}.rec-sidebar{flex-direction:column;}.rsidebar{width:100%;}}
+</style>
+
+<div class="w">
+<div class="topbar">
+  <div class="atitle"><i class="ti ti-robot" aria-hidden="true" style="font-size:18px;color:#185FA5;"></i>AEO<span class="beta">BETA</span></div>
+  <div class="trial">Free trial: <b>49/25</b> · 38 recs · 19 cited pages</div>
+</div>
+<div class="nav">
+  <div class="nt on" onclick="gT('dash',this)">Dashboard</div>
+  <div class="nt" onclick="gT('prompts',this)">Prompts</div>
+  <div class="nt" onclick="gT('queue',this)">Content queue</div>
+  <div class="nt" onclick="gT('citations',this)">Citations</div>
+  <div class="nt" onclick="gT('hubspot-recs',this)">HubSpot recs</div>
+  <div class="nt" onclick="gT('strategy',this)">Strategy</div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="t-dash" class="tc on">
+  <div class="stabs">
+    <div class="st on" onclick="gS('bv',this,'dash')">Brand visibility</div>
+    <div class="st" onclick="gS('bs',this,'dash')">Sentiment</div>
+    <div class="st" onclick="gS('bc',this,'dash')">Competitors</div>
+    <div class="st" onclick="gS('bcit',this,'dash')">Citations</div>
+  </div>
+
+  <div id="s-bv" class="sp on">
+    <div class="dp">APR 27 – MAY 11, 2026 · WEEKLY</div>
+    <div class="mg">
+      <div class="mc"><div class="ml">Brand visibility</div><div class="mv">2.07%</div><div class="ms">of tracked prompts</div></div>
+      <div class="mc"><div class="ml">Top prompt</div><div class="mv" style="color:#0F6E56;">53%</div><div class="ms">Custom Forge Apps</div></div>
+      <div class="mc"><div class="ml">Domain citation rate</div><div class="mv" style="color:#0F6E56;">16.5%</div><div class="ms">vs eficode 0.6%</div></div>
+      <div class="mc"><div class="ml">Cited pages</div><div class="mv" style="color:#185FA5;">19</div><div class="ms">atlas-bench.com</div></div>
+    </div>
+    <div class="card">
+      <div class="ct">Visibility over time</div><div class="cs">Apr 27 – May 11, 2026 · All platforms</div>
+      <div class="legr"><div class="li"><div class="ld" style="background:#D85A30;"></div>ChatGPT</div><div class="li"><div class="ld" style="background:#1D9E75;"></div>Gemini</div><div class="li"><div class="ld" style="background:#7F77DD;"></div>Perplexity</div></div>
+      <div class="cb"><canvas id="vc" role="img" aria-label="Brand visibility near 0% all platforms">Near 0% all platforms.</canvas></div>
+    </div>
+    <div class="ib good"><div class="it good">✓ 19 pages already cited — fastest win is on-page optimization</div><div class="ix good">AI is already using your pages as sources. Add "Atlas Bench" to the title, H1, and first sentence of each cited page. Go to Citations → Owned Citations to see what to change on every page.</div></div>
+    <div class="ib warn"><div class="it warn">⚠ 38 official HubSpot recommendations waiting — none started yet</div><div class="ix warn">34 net-new blog posts + 4 social posts. Every one targets a 0% prompt. Go to HubSpot Recs tab to see the full list.</div></div>
+    <button class="ab" onclick="gT('citations',document.querySelectorAll('.nt')[3])">View cited pages →</button>
+    <button class="ab" onclick="gT('queue',document.querySelectorAll('.nt')[2])">Content queue →</button>
+  </div>
+
+  <div id="s-bs" class="sp">
+    <div class="dp">APR 27 – MAY 11, 2026 · WEEKLY</div>
+    <div class="mg">
+      <div class="mc"><div class="ml">Overall sentiment</div><div class="sent-big">59.67%</div><div class="ms">positive</div></div>
+      <div class="mc"><div class="ml">Best platform</div><div class="mv" style="font-size:18px;color:#0F6E56;">Gemini</div><div class="ms">~80% stable</div></div>
+      <div class="mc"><div class="ml">Critical drop</div><div class="mv" style="font-size:18px;color:#993C1D;">ChatGPT</div><div class="ms">50% → 10%</div></div>
+    </div>
+    <div class="card">
+      <div class="ct">Sentiment by platform — May 11</div>
+      <div class="psr"><div class="psl">Gemini</div><div class="psb"><div class="psf" style="width:80%;background:#1D9E75;"></div></div><span style="font-size:13px;color:var(--color-text-secondary);">~80%</span></div>
+      <div class="psr"><div class="psl">Perplexity</div><div class="psb"><div class="psf" style="width:65%;background:#7F77DD;"></div></div><span style="font-size:13px;color:var(--color-text-secondary);">~65%</span></div>
+      <div class="psr"><div class="psl">ChatGPT</div><div class="psb"><div class="psf" style="width:10%;background:#D85A30;"></div></div><span style="font-size:13px;color:var(--color-text-secondary);">~10%</span></div>
+    </div>
+    <div class="card"><div class="ct">Sentiment over time</div>
+      <div class="legr"><div class="li"><div class="ld" style="background:#D85A30;"></div>ChatGPT</div><div class="li"><div class="ld" style="background:#1D9E75;"></div>Gemini</div><div class="li"><div class="ld" style="background:#7F77DD;"></div>Perplexity</div></div>
+      <div class="cb"><canvas id="sc" role="img" aria-label="ChatGPT collapsed to 10%. Gemini stable at 80%.">ChatGPT collapsed. Gemini stable.</canvas></div>
+    </div>
+    <div class="ib danger"><div class="it danger">⚠ ChatGPT dropped from 50% to 10% in one week — urgent</div><div class="ix danger">Publish Atlas Bench-named, direct-answer content for Decision and Evaluation phase prompts immediately.</div></div>
+    <button class="ab" onclick="sendPrompt('ChatGPT AEO sentiment for Atlas Bench dropped from 50% to 10% in one week. What content changes will fix this?')">Ask Claude how to fix it ↗</button>
+  </div>
+
+  <div id="s-bc" class="sp">
+    <div class="dp">APR 27 – MAY 11, 2026 · WEEKLY</div>
+    <div class="card"><div class="ct">Share of voice vs competitors</div>
+      <table class="dt"><thead><tr><th>Company</th><th>SOV</th><th style="width:80px;"></th></tr></thead><tbody>
+        <tr><td>Eficode</td><td>29%</td><td><div class="bb"><div class="bf" style="width:29%;background:#1D9E75;"></div></div></td></tr>
+        <tr><td style="color:#185FA5;font-weight:500;">Atlas Bench ← you</td><td>16%</td><td><div class="bb"><div class="bf" style="width:16%;background:#185FA5;"></div></div></td></tr>
+        <tr><td>Adaptavist</td><td>14%</td><td><div class="bb"><div class="bf" style="width:14%;background:#7F77DD;"></div></div></td></tr>
+        <tr><td>ServiceRocket</td><td>10%</td><td><div class="bb"><div class="bf" style="width:10%;background:#D85A30;"></div></div></td></tr>
+        <tr><td>Cprime</td><td>&lt;5%</td><td><div class="bb"><div class="bf" style="width:5%;background:#888780;"></div></div></td></tr>
+      </tbody></table>
+    </div>
+    <div class="card"><div class="ct">Competitor visibility trend</div>
+      <div class="legr"><div class="li"><div class="ld" style="background:#185FA5;"></div>Atlas Bench</div><div class="li"><div class="ld" style="background:#1D9E75;"></div>Eficode ↑</div><div class="li"><div class="ld" style="background:#7F77DD;"></div>Adaptavist</div><div class="li"><div class="ld" style="background:#D85A30;"></div>ServiceRocket ↓</div></div>
+      <div class="cb"><canvas id="cc" role="img" aria-label="Eficode rising. Atlas Bench flat.">Eficode rising fast.</canvas></div>
+    </div>
+    <div class="ib warn"><div class="it warn">⚠ Eficode 29% vs your 16% — but your citation rate is 27x higher</div><div class="ix warn">Eficode gets named more often but is barely cited. Their content is brand-forward. Write posts that name Atlas Bench as the solution, not just topic explainers.</div></div>
+    <button class="ab" onclick="sendPrompt('Eficode has 29% AEO share of voice but only 0.6% domain citation rate vs Atlas Bench 16% SOV and 16.5% citation rate. What does this mean and how should Atlas Bench respond?')">Ask Claude what this means strategically ↗</button>
+  </div>
+
+  <div id="s-bcit" class="sp">
+    <div class="dp">APR 27 – MAY 11, 2026 · WEEKLY</div>
+    <div class="mg">
+      <div class="mc"><div class="ml">Your citation rate</div><div class="insight-big" style="color:#0F6E56;">16.5%</div><div class="ms">May 4 snapshot</div></div>
+      <div class="mc"><div class="ml">Total raw citations</div><div class="insight-big" style="color:#185FA5;">1,830</div><div class="ms">atlas-bench.com</div></div>
+      <div class="mc"><div class="ml">Nearest competitor</div><div class="insight-big" style="font-size:18px;color:#888780;">0.6%</div><div class="ms">eficode.com</div></div>
+    </div>
+    <div class="card"><div class="ct">Domain citation rate — May 4 breakdown</div>
+      <div class="psr"><div class="psl">atlas-bench.com</div><div class="psb"><div class="psf" style="width:100%;background:#185FA5;"></div></div><span style="font-size:13px;font-weight:500;color:#0F6E56;">16.5%</span></div>
+      <div class="psr"><div class="psl">eficode.com</div><div class="psb"><div class="psf" style="width:3.6%;background:#1D9E75;"></div></div><span style="font-size:13px;color:var(--color-text-secondary);">0.6%</span></div>
+      <div class="psr"><div class="psl">adaptavist.com</div><div class="psb"><div class="psf" style="width:2.4%;background:#7F77DD;"></div></div><span style="font-size:13px;color:var(--color-text-secondary);">0.4%</span></div>
+      <div class="psr"><div class="psl">servicerocket.com</div><div class="psb"><div class="psf" style="width:2.4%;background:#D85A30;"></div></div><span style="font-size:13px;color:var(--color-text-secondary);">0.4%</span></div>
+      <div class="psr"><div class="psl">valiantys.com</div><div class="psb"><div class="psf" style="width:1.2%;background:#888780;"></div></div><span style="font-size:13px;color:var(--color-text-secondary);">0.2%</span></div>
+    </div>
+    <div class="ib good"><div class="it good">✓ 16.5% citation rate — 27x ahead of any competitor</div><div class="ix good">AI engines trust your site overwhelmingly. The gap between 16.5% citations and 2.07% brand visibility is the entire opportunity. Go to Citations → Owned Citations to see exactly which 19 pages to update.</div></div>
+    <button class="ab" onclick="gT('citations',document.querySelectorAll('.nt')[3])">See all 19 cited pages →</button>
+  </div>
+</div>
+
+<!-- PROMPTS TAB -->
+<div id="t-prompts" class="tc">
+  <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:10px;">49 prompts · <span style="color:#0F6E56;">●</span> green dot = has content recommendations · click any row to expand</div>
+  <div class="filter-bar">
+    <div class="fchip on" onclick="filterP('all',this)">All (49)</div>
+    <div class="fchip" onclick="filterP('win',this)">⭐ 53% winner</div>
+    <div class="fchip" onclick="filterP('some',this)">Some visibility</div>
+    <div class="fchip" onclick="filterP('zero',this)">0% gaps</div>
+    <div class="fchip" onclick="filterP('na',this)">N/A untracked</div>
+    <div class="fchip" onclick="filterP('hasrec',this)">Has recommendations</div>
+  </div>
+  <div class="phdr"><div class="phc">Prompt</div><div class="phc c">Visibility</div><div class="phc c">Phase</div></div>
+  <div class="plist" id="plist"></div>
+  <div id="det" class="det"></div>
+  <button class="ab" style="margin-top:10px;" onclick="sendPrompt('Rank all Atlas Bench AEO prompts by which content gap would give the biggest visibility increase if I published one blog post for it.')">Rank by opportunity ↗</button>
+</div>
+
+<!-- CONTENT QUEUE -->
+<div id="t-queue" class="tc">
+  <div style="font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px;">Content queue — 34 net-new posts</div>
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px;">Every HubSpot-recommended title. Click Draft to write with Claude using the Atlas Bench blog skill.</div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+    <span class="rtag listicle">Listicle</span><span class="rtag guide">Guide</span><span class="rtag howto">How-to</span><span class="rtag product">Product</span><span class="rtag educational">Educational</span>
+  </div>
+  <div id="qlist"></div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">
+    <button class="ab" onclick="sendPrompt('Write a full Atlas Bench blog post in ButtercMS format following the atlas-bench-blog-writing skill for: 11 Expert-Led Atlassian Cloud Migration Services 2026')">Draft first post ↗</button>
+    <button class="ab" onclick="sendPrompt('Create a 3-month content calendar for Atlas Bench publishing all 34 HubSpot AEO net-new content recommendations in priority order.')">Build 3-month calendar ↗</button>
+  </div>
+</div>
+
+<!-- CITATIONS -->
+<div id="t-citations" class="tc">
+  <div style="font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px;">Citation analysis</div>
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px;">Apr 27 – May 11, 2026 · Weekly</div>
+  <div class="stabs">
+    <div class="st on" onclick="gS('cperf',this,'citations')">vs competitors</div>
+    <div class="st" onclick="gS('ccomp',this,'citations')">Composition</div>
+    <div class="st" onclick="gS('ctop',this,'citations')">Top domains</div>
+    <div class="st" onclick="gS('cowned',this,'citations')">Owned citations</div>
+  </div>
+
+  <div id="s-cperf" class="sp on">
+    <div class="two-col">
+      <div class="card"><div class="ct">Owned domain citation rate</div><div class="cs">atlas-bench.com rising steeply · competitors flat near 0%</div>
+        <div class="legr"><div class="li"><div class="ld" style="background:#7F77DD;"></div>atlas-bench.com ↑</div><div class="li"><div class="ld" style="background:#D85A30;"></div>adaptavist.com</div></div>
+        <div class="cb2"><canvas id="dcr" role="img" aria-label="Atlas-bench.com rising from 10.5% to 16.5%. Competitors near 0%.">Rising fast.</canvas></div>
+      </div>
+      <div class="card"><div class="ct">Brand mention rate vs competitors</div><div class="cs">Adaptavist declining — share available to capture now</div>
+        <div class="legr"><div class="li"><div class="ld" style="background:#D85A30;"></div>Adaptavist ↓</div><div class="li"><div class="ld" style="background:#7F77DD;"></div>Atlas Bench</div></div>
+        <div class="cb2"><canvas id="bmr" role="img" aria-label="Adaptavist declining from 10% to 5.5%.">Adaptavist declining.</canvas></div>
+      </div>
+    </div>
+    <div class="ib good"><div class="it good">✓ 16.5% citation rate — 27x ahead of all competitors</div><div class="ix good">AI engines trust your site overwhelmingly. The fastest path to higher brand visibility is naming Atlas Bench explicitly on the 19 pages already being cited.</div></div>
+    <div class="ib danger"><div class="it danger">⚠ Adaptavist brand mention declining fast — capture this share now</div><div class="ix danger">Adaptavist fell from ~10% to ~5.5% mention rate in 3 weeks. Publish "Top Atlassian Managed Service Partners for Enterprises" and "Atlassian Managed Services for Jira and Confluence" immediately.</div></div>
+  </div>
+
+  <div id="s-ccomp" class="sp">
+    <div class="two-col">
+      <div class="card"><div class="ct">Citations by content type</div><div class="cs">Blog posts dominate at ~40% — your strategy is right</div>
+        <div class="legr"><div class="li"><div class="ld" style="background:#D85A30;"></div>Blog ~40%</div><div class="li"><div class="ld" style="background:#7F77DD;"></div>Documentation</div><div class="li"><div class="ld" style="background:#1D9E75;"></div>Comparison</div></div>
+        <div class="cb2"><canvas id="ctype" role="img" aria-label="Blog dominates citations at 40%.">Blog dominates.</canvas></div>
+      </div>
+      <div class="card"><div class="ct">Citations by channel</div><div class="cs">Earned ~75% — organic trust is your foundation</div>
+        <div class="legr"><div class="li"><div class="ld" style="background:#EC4899;"></div>Earned ~75%</div><div class="li"><div class="ld" style="background:#BA7517;"></div>Owned</div><div class="li"><div class="ld" style="background:#7F77DD;"></div>Peer</div></div>
+        <div class="cb2"><canvas id="cchan" role="img" aria-label="Earned dominates at 75%.">Earned dominates.</canvas></div>
+      </div>
+    </div>
+    <div class="ib good"><div class="it good">✓ Blog = ~40% of all AI citations. Every post you publish to standard directly contributes.</div></div>
+  </div>
+
+  <div id="s-ctop" class="sp">
+    <div class="two-col">
+      <div class="card"><div class="ct">Top cited domains — page 1</div>
+        <table class="dt"><thead><tr><th>Domain</th><th>Citations</th></tr></thead><tbody>
+          <tr><td>atlassian.com</td><td>3,141</td></tr>
+          <tr><td style="color:#185FA5;font-weight:500;">atlas-bench.com</td><td>1,830</td></tr>
+          <tr><td>youtube.com</td><td>1,113</td></tr>
+          <tr><td>medium.com</td><td>216</td></tr>
+          <tr><td>asana.com</td><td>188</td></tr>
+        </tbody></table>
+      </div>
+      <div class="card"><div class="ct">Top cited domains — page 2</div>
+        <table class="dt"><thead><tr><th>Domain</th><th>Citations</th></tr></thead><tbody>
+          <tr><td>deviniti.com</td><td>177</td></tr>
+          <tr><td>microsoft.com</td><td>170</td></tr>
+          <tr><td>g2.com</td><td>134</td></tr>
+          <tr><td>mgtechsoft.com</td><td>131</td></tr>
+          <tr><td>eficode.com</td><td>122</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+    <div class="ib good"><div class="it good">✓ #2 most-cited domain — only behind Atlassian.com. Eficode has just 122 citations vs your 1,830.</div></div>
+  </div>
+
+  <div id="s-cowned" class="sp">
+    <div style="font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px;">Top owned citations — 19 pages</div>
+    <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px;">The atlas-bench.com pages AI engines reference most. Each one needs "Atlas Bench" added to title, H1, and first sentence to convert citations into brand mentions.</div>
+    <div class="ib warn" style="margin-bottom:12px;"><div class="it warn">⚠ One change fixes all 19 pages — add "Atlas Bench" to the top of each</div><div class="ix warn">AI is using your pages as sources but answering without naming you. Update the title, H1, and opening sentence of every page below. This alone could move visibility from 2.07% to significantly higher within weeks — no new content needed.</div></div>
+    <div id="owned-list"></div>
+    <button class="ab" style="margin-top:10px;" onclick="sendPrompt('Give me specific title tag, H1, and opening sentence rewrites for these 19 atlas-bench.com pages to maximize Atlas Bench brand mentions in AI answers: 6-best-tools-for-it-service-management-teams-in-2026, jira-product-discovery-overview-2025, getting-started-with-jira-product-discovery, integrating-work-items-lifecycle-for-enhanced-itsm-solutions, get-better-reporting-from-jira-service-management, forge-platform-updates-every-atlassian-app-developer-should-track-in-2025, choosing-the-right-developer-platform-atlassian-compass-vs-competitors, simplifying-product-operations-with-jira-product-discovery, ai-code-review-planning-with-rovo-dev-agents, atlassian-managed-services, custom-forge-app-development-for-enhanced-team-collaboration, jira-service-management-for-non-it-teams-a-practical-guide, rovo-dev-is-now-generally-available-in-vs-code, asset-and-configuration-management-in-jira-service-management, atlassian-compass-vs-cortex-a-comparison, jira-service-management-jira-software-how-to-integrate, unlock-data-driven-insights-with-atlassian-analytics, ascend-to-the-cloud-the-next-chapter-for-atlassian, how-rovo-transforms-teamwork-through-ai-powered-search-and-chat-features')">Get rewrites for all 19 pages ↗</button>
+  </div>
+</div>
+
+<!-- HUBSPOT RECS -->
+<div id="t-hubspot-recs" class="tc">
+  <div style="font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px;">HubSpot's official 38 recommendations</div>
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px;">Built from citation analysis. All currently Not started.</div>
+  <div class="rec-sidebar">
+    <div class="rsidebar">
+      <div class="rsitem on" onclick="switchRcat('all',this)"><div class="rsname on">All recommendations</div><div class="rscount">38 total</div></div>
+      <div class="rsitem" onclick="switchRcat('netnew',this)"><div class="rsname">Owned content</div><div class="rscount">34 net-new pieces</div></div>
+      <div class="rsitem" onclick="switchRcat('social',this)"><div class="rsname">Social amplification</div><div class="rscount">4 social posts</div></div>
+      <div class="rsitem" onclick="switchRcat('inprogress',this)"><div class="rsname">In progress</div><div class="rscount">0 started</div></div>
+      <div class="rsitem" onclick="switchRcat('completed',this)"><div class="rsname">Completed</div><div class="rscount">0 done</div></div>
+    </div>
+    <div class="rcontent">
+      <div class="rpanel-hd">Recommendations are built from citation analysis. HubSpot looks at every AI answer to determine what content would boost your chances of being cited in future answers.</div>
+      <div id="rcat-all" class="rcat on"><div id="rlist-all"></div></div>
+      <div id="rcat-netnew" class="rcat"><div id="rlist-netnew"></div></div>
+      <div id="rcat-social" class="rcat"><div id="rlist-social"></div></div>
+      <div id="rcat-inprogress" class="rcat"><div style="font-size:13px;color:var(--color-text-secondary);padding:16px 0;">No recommendations in progress yet. Pick from the lists above to get started.</div></div>
+      <div id="rcat-completed" class="rcat"><div style="font-size:13px;color:var(--color-text-secondary);padding:16px 0;">No recommendations completed yet. Each item published counts toward your visibility score.</div></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">
+    <button class="ab" onclick="sendPrompt('Write a full Atlas Bench blog post following the atlas-bench-blog-writing skill for: 11 Expert-Led Atlassian Cloud Migration Services 2026')">Draft first net-new post ↗</button>
+    <button class="ab" onclick="sendPrompt('Create a 3-month content calendar for Atlas Bench publishing all 34 net-new HubSpot AEO recommendations in priority order.')">3-month calendar ↗</button>
+  </div>
+</div>
+
+<!-- STRATEGY -->
+<div id="t-strategy" class="tc">
+  <div style="font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px;">Prioritized strategy</div>
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px;">9 actions ordered by impact, based on all your AEO data.</div>
+  <div class="rec-strat" style="padding-top:0;"><div class="rn">1</div><div class="rb"><div class="rtl">Optimize the 19 cited pages for brand naming <span class="pb pbh">Highest impact · no new content needed</span></div><div class="rd">You have 19 pages AI is already citing. Add "Atlas Bench" to the title, H1, and first sentence of each. Go to Citations → Owned Citations for the full list with specific tips per page. This could move brand visibility from 2.07% significantly higher within weeks.</div></div></div>
+  <div class="rec-strat"><div class="rn">2</div><div class="rb"><div class="rtl">Work through all 34 net-new HubSpot recommendations <span class="pb pbh">High</span></div><div class="rd">HubSpot pre-generated exact blog titles for every 0% prompt. With your 16.5% citation rate as a base, new posts will get picked up by AI quickly. Start with Cloud Migration — it has the most prompts. See Content Queue tab.</div></div></div>
+  <div class="rec-strat"><div class="rn">3</div><div class="rb"><div class="rtl">Fix ChatGPT sentiment — dropped 50% to 10% in one week <span class="pb pbh">High</span></div><div class="rd">Publish Atlas Bench-named, direct-answer content for Decision and Evaluation phase prompts. Name Atlas Bench as the solution in the title and opening paragraph.</div></div></div>
+  <div class="rec-strat"><div class="rn">4</div><div class="rb"><div class="rtl">Capture Adaptavist's declining brand mention share <span class="pb pbh">High</span></div><div class="rd">Adaptavist fell from ~10% to ~5.5% mention rate in 3 weeks. Publish "Top Atlassian Managed Service Partners for Enterprises" (Listicle) and "Atlassian Managed Services for Jira and Confluence" (Product) immediately.</div></div></div>
+  <div class="rec-strat"><div class="rn">5</div><div class="rb"><div class="rtl">Replicate the 53% Forge prompt formula across all product areas <span class="pb pbh">High</span></div><div class="rd">One prompt already wins at 53%. That formula — direct question in title, Atlas Bench as the answer in paragraph one, data points, structured headers — needs to be applied to every new post across Cloud Migration, JSM, JPD, Managed Services, and Rovo Dev.</div></div></div>
+  <div class="rec-strat"><div class="rn">6</div><div class="rb"><div class="rtl">Close the Eficode share of voice gap with brand-forward writing <span class="pb pbm">Medium</span></div><div class="rd">Eficode has 29% SOV but only 0.6% citation rate vs your 16.5%. They name Eficode as the solution in their content. Do the same for Atlas Bench — every new post should answer "why Atlas Bench" not just "what is X."</div></div></div>
+  <div class="rec-strat"><div class="rn">7</div><div class="rb"><div class="rtl">Blog posts drive ~40% of AI citations — maintain the standard <span class="pb pbm">Medium</span></div><div class="rd">Citation composition confirms blog is the dominant content type. Every Atlas Bench post published to standard (H2/H3, FAQs, data, credentials) directly contributes. Keep the cadence.</div></div></div>
+  <div class="rec-strat"><div class="rn">8</div><div class="rb"><div class="rtl">Audit down to 25 best prompts before upgrading <span class="pb pbm">Medium</span></div><div class="rd">You have 49 prompts vs 25 allowed on free trial. Keep: Cloud Migration, Custom Forge Apps, JSM, JPD, Rovo Dev, Atlassian Consulting. Deprioritize: generic Teamwork Bundle and AI meeting assistant prompts until their content is published.</div></div></div>
+  <div class="rec-strat"><div class="rn">9</div><div class="rb"><div class="rtl">Gemini at 80% sentiment — your blog format is working <span class="pb pbl">Ongoing</span></div><div class="rd">Gemini rewards H2/H3, FAQs, data points, and credential lines — exactly Atlas Bench's blog standard. Every post to this standard compounds Gemini visibility over time. This is validation, not a new action.</div></div></div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;">
+    <button class="ab" onclick="sendPrompt('Give me specific title, H1, and opening sentence rewrites for the 19 atlas-bench.com pages most cited by AI to maximize Atlas Bench brand mention rate.')">Get page optimization rewrites ↗</button>
+    <button class="ab" onclick="sendPrompt('Create a full 3-month AEO strategy for Atlas Bench: page optimizations, all 38 HubSpot recs, ChatGPT sentiment fix, and Adaptavist share capture in priority order.')">Full 3-month strategy ↗</button>
+  </div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const OWNED_PAGES=[
+  {slug:"6-best-tools-for-it-service-management-teams-in-2026",topic:"ITSM tools comparison",badge:"fix",tip:"Add 'Atlas Bench recommends' or frame as 'Atlas Bench's Guide to...' in the title. Name Atlas Bench as the ITSM implementation partner in the opening paragraph."},
+  {slug:"jira-product-discovery-overview-2025",topic:"Jira Product Discovery",badge:"fix",tip:"Rename to 'Atlas Bench's Overview: Jira Product Discovery 2025'. Name Atlas Bench as the JPD implementation partner in the first paragraph."},
+  {slug:"getting-started-with-jira-product-discovery",topic:"Jira Product Discovery",badge:"fix",tip:"JPD prompts already show 2–4% visibility — this page can push them higher. Add 'Atlas Bench guides teams through Jira Product Discovery setup' in the first sentence."},
+  {slug:"integrating-work-items-lifecycle-for-enhanced-itsm-solutions",topic:"ITSM / JSM",badge:"fix",tip:"Core ITSM service area. Add Atlas Bench as the named partner in the H1 subtext and first sentence. Link to the JSM service page."},
+  {slug:"get-better-reporting-from-jira-service-management",topic:"JSM Analytics",badge:"fix",tip:"Directly supports JSM Analytics prompts at 0%. Add 'Atlas Bench helps teams build JSM reporting' in the intro. This page could start generating visibility for analytics prompts immediately."},
+  {slug:"forge-platform-updates-every-atlassian-app-developer-should-track-in-2025",topic:"Forge / Custom Apps",badge:"good",tip:"The 53% winning Forge prompt cites this topic area. Already working — strengthen by adding 'Atlas Bench Forge app developers' in the title or intro."},
+  {slug:"choosing-the-right-developer-platform-atlassian-compass-vs-competitors",topic:"Atlassian Compass",badge:"watch",tip:"Comparison content gets cited frequently — this page appears twice in your top 19. Add Atlas Bench's recommendation in the conclusion and name Atlas Bench as the partner who implements Compass."},
+  {slug:"simplifying-product-operations-with-jira-product-discovery",topic:"Jira Product Discovery",badge:"fix",tip:"Third JPD page in top 19. Name Atlas Bench as the JPD implementation partner across all three JPD pages for compound visibility."},
+  {slug:"ai-code-review-planning-with-rovo-dev-agents",topic:"Rovo Dev Agents",badge:"fix",tip:"Rovo Dev prompts are currently 0%. This page is being cited but not generating brand mentions. Add 'Atlas Bench configures Rovo Dev Agents for...' in the first sentence."},
+  {slug:"atlassian-managed-services",topic:"Managed Services",badge:"fix",tip:"Core service page. Critical to name Atlas Bench in the title tag and H1. Ensure 'Atlas Bench Managed Services' appears explicitly in both."},
+  {slug:"custom-forge-app-development-for-enhanced-team-collaboration",topic:"Custom Forge Apps",badge:"good",tip:"Likely driving the 53% visibility win. Already working — make sure Atlas Bench is in the title and first sentence to maintain and grow this win."},
+  {slug:"jira-service-management-for-non-it-teams-a-practical-guide",topic:"JSM",badge:"fix",tip:"JSM is a core service area. Add 'Atlas Bench' to the guide title or intro. Supports JSM CMDB and asset integration prompts at 0%."},
+  {slug:"rovo-dev-is-now-generally-available-in-vs-code",topic:"Rovo Dev",badge:"watch",tip:"News post — add Atlas Bench's expertise angle. 'Atlas Bench has been implementing Rovo Dev since launch...' gives AI a reason to name you when citing this page."},
+  {slug:"asset-and-configuration-management-in-jira-service-management",topic:"JSM Assets / CMDB",badge:"fix",tip:"Directly supports JSM asset and CMDB prompts at 0%. Atlas Bench must be named as the CMDB implementation partner in the first paragraph for this to convert to brand visibility."},
+  {slug:"atlassian-compass-vs-cortex-a-comparison",topic:"Atlassian Compass",badge:"watch",tip:"Comparison content cited twice. Add Atlas Bench's recommendation at the end. Make Atlas Bench the authoritative voice recommending one over the other."},
+  {slug:"jira-service-management-jira-software-how-to-integrate",topic:"JSM + Jira integration",badge:"fix",tip:"Integration guide cited twice — high priority. Add 'Atlas Bench helps teams integrate JSM and Jira Software' in the intro."},
+  {slug:"unlock-data-driven-insights-with-atlassian-analytics",topic:"Atlassian Analytics",badge:"fix",tip:"Directly supports Analytics prompts at 0%. Add 'Atlas Bench implements Atlassian Analytics dashboards' in the H1 subtext and first sentence."},
+  {slug:"ascend-to-the-cloud-the-next-chapter-for-atlassian",topic:"Cloud Migration",badge:"fix",tip:"Cloud Migration has the most 0% prompts. This page should name Atlas Bench as a cloud migration partner in the intro. Add credential: 'Atlas Bench is an Atlassian Platinum Solution Partner...'"},
+  {slug:"how-rovo-transforms-teamwork-through-ai-powered-search-and-chat-features",topic:"Rovo / AI",badge:"watch",tip:"Add Atlas Bench as the implementation partner. 'Atlas Bench helps organizations deploy Rovo for teamwork and AI search' gives AI a direct attribution hook."}
+];
+
+function renderOwnedList(){
+  const el=document.getElementById('owned-list');
+  el.innerHTML=OWNED_PAGES.map((p,i)=>{
+    const badgeLabel=p.badge==='fix'?'Needs Atlas Bench naming':p.badge==='good'?'Already working — polish':'Watch & optimize';
+    const badgeCol=p.badge==='fix'?'#993C1D':p.badge==='good'?'#085041':'#854F0B';
+    const badgeBg=p.badge==='fix'?'#FAECE7':p.badge==='good'?'#E1F5EE':'#FAEEDA';
+    const url=`https://www.atlas-bench.com/blog/${p.slug}`;
+    return `<div class="oc-row">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
+        <div>
+          <div class="oc-num">#${i+1} · ${p.topic}</div>
+          <a href="${url}" style="font-size:13px;color:#185FA5;font-weight:500;word-break:break-all;text-decoration:none;" target="_blank">/blog/${p.slug}</a>
+        </div>
+        <span style="display:inline-block;font-size:12px;padding:3px 10px;border-radius:20px;background:${badgeBg};color:${badgeCol};white-space:nowrap;flex-shrink:0;">${badgeLabel}</span>
+      </div>
+      <div class="oc-tip">${p.tip}</div>
+      <button class="ab sm" onclick="sendPrompt('Rewrite the title tag, H1, and opening sentence of this Atlas Bench blog post to maximize brand mentions in AI answers. Post slug: ${p.slug.replace(/'/g,"\\'").replace(/"/g,'\\"')}. Topic: ${p.topic.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">Get specific rewrite for this page ↗</button>
+    </div>`;
+  }).join('');
+}
+renderOwnedList();
+
+const PROMPTS=[
+  {t:"Which expert-led migration services help enterprises move collaboration tools to the cloud?",v:"0%",vc:0,ph:"consideration",prod:"Atlassian Cloud Migration",recs:[{title:"11 Expert-Led Atlassian Cloud Migration Services 2026",type:"Listicle"},{title:"Enterprise Atlassian Cloud Migration Services for Teams",type:"Product"}]},
+  {t:"What makes it hard to plan large migrations for teamwork platforms?",v:"0%",vc:0,ph:"awareness",prod:"Atlassian Cloud Migration",recs:[{title:"Enterprise Atlassian Cloud Migration Adoption Plan 2026",type:"Guide"},{title:"12 Hidden Failure Points in Collaboration Migrations",type:"Listicle"}]},
+  {t:"Atlas Bench vs other Atlassian cloud migration services for complex enterprise environments",v:"N/A",vc:-1,ph:"evaluation",prod:"Atlassian Cloud Migration",recs:[]},
+  {t:"Atlas Bench vs other Atlassian cloud platform consulting and managed services providers",v:"N/A",vc:-1,ph:"evaluation",prod:"Atlassian Cloud Platform",recs:[]},
+  {t:"Which consulting services specialize in enterprise cloud collaboration?",v:"0%",vc:0,ph:"consideration",prod:"Atlassian Cloud Platform",recs:[]},
+  {t:"Why do enterprises struggle to standardize processes across cloud tools?",v:"0%",vc:0,ph:"awareness",prod:"Atlassian Cloud Platform",recs:[{title:"How to Standardize Workflows in Jira and Confluence",type:"How-to"},{title:"10 Controls to Govern Jira Confluence and JSM Workflows",type:"Listicle"},{title:"Enterprise Workflow Governance for Jira and Confluence",type:"Guide"},{title:"Atlassian Accelerators for Cloud Process Standardization",type:"Product"},{title:"Why Enterprise Process Standardization Fails in Cloud Tools",type:"Educational"}]},
+  {t:"Which agencies offer custom app development for Atlassian cloud?",v:"53%",vc:53,ph:"consideration",prod:"Custom Forge Apps",star:true,recs:[]},
+  {t:"Why do teams struggle to scope custom cloud app development?",v:"0%",vc:0,ph:"awareness",prod:"Custom Forge Apps",recs:[{title:"11 Scoping Deliverables That Stop Cloud App Scope Creep",type:"Listicle"}]},
+  {t:"Can Atlas Bench handle end-to-end Forge app development and deployment?",v:"N/A",vc:-1,ph:"decision",prod:"Custom Forge Apps",recs:[]},
+  {t:"Atlas Bench versus other partners for custom Forge app development",v:"N/A",vc:-1,ph:"evaluation",prod:"Custom Forge Apps",recs:[]},
+  {t:"Atlas Bench vs other Jira Service Management analytics dashboard experts",v:"N/A",vc:-1,ph:"evaluation",prod:"Atlassian Analytics",recs:[]},
+  {t:"Does Atlas Bench build custom Jira Service Management analytics dashboards?",v:"N/A",vc:-1,ph:"decision",prod:"Atlassian Analytics",recs:[]},
+  {t:"What causes reporting gaps in service management analytics tools?",v:"0%",vc:0,ph:"awareness",prod:"Atlassian Analytics",recs:[{title:"11 Causes of Incident Analytics Gaps in JSM Dashboards",type:"Listicle"},{title:"Why Jira Service Management Incident Dashboards Misreport",type:"Educational"},{title:"Audit Incident Dashboard Data in Jira Service Management",type:"Guide"}]},
+  {t:"What are the top analytics dashboard tools for service management?",v:"0%",vc:0,ph:"consideration",prod:"Atlassian Analytics",recs:[{title:"Top 10 Atlassian Analytics Dashboards for JSM KPIs",type:"Listicle"}]},
+  {t:"Does Atlas Bench offer SLAs for managing Jira, Confluence, and cloud tools?",v:"N/A",vc:-1,ph:"decision",prod:"Managed Services",recs:[]},
+  {t:"Atlas Bench vs other providers for managed services on Atlassian platforms",v:"N/A",vc:-1,ph:"evaluation",prod:"Managed Services",recs:[]},
+  {t:"Which managed services support full teamwork and strategy software stacks?",v:"0%",vc:0,ph:"consideration",prod:"Managed Services",recs:[{title:"Top Teamwork and Strategy Bundles for Visibility in 2026",type:"Listicle"},{title:"Managed Services for Atlassian Teamwork Collections",type:"Product"}]},
+  {t:"Why do organizations struggle to run collaboration tool collections efficiently?",v:"0%",vc:0,ph:"awareness",prod:"Managed Services",recs:[{title:"Enterprise Collaboration Tool Governance for Scale 2026",type:"Guide"},{title:"10 Collaboration Tool Sprawl Warning Signs in 2026",type:"Listicle"}]},
+  {t:"Which services help with product discovery tool setup and integration?",v:"2%",vc:2,ph:"consideration",prod:"Jira Product Discovery",recs:[{title:"Jira Product Discovery Setup and Integration Services",type:"Product"},{title:"Integrate Jira Product Discovery with Jira and Confluence",type:"Guide"},{title:"10 Jira Product Discovery Integrations for Enterprise Teams",type:"Listicle"}]},
+  {t:"What makes it hard to connect product discovery tools to delivery pipelines?",v:"0%",vc:0,ph:"awareness",prod:"Jira Product Discovery",recs:[{title:"Requirements to Delivery Traceability in Jira Product Discovery",type:"Guide"}]},
+  {t:"Does Atlas Bench configure Jira Product Discovery to sync ideas to delivery?",v:"N/A",vc:-1,ph:"decision",prod:"Jira Product Discovery",recs:[]},
+  {t:"Atlas Bench vs other Jira Product Discovery setup and integration partners",v:"N/A",vc:-1,ph:"evaluation",prod:"Jira Product Discovery",recs:[]},
+  {t:"Does Atlas Bench provide ongoing administration and staffing for Atlassian tools?",v:"N/A",vc:-1,ph:"decision",prod:"Atlassian Consulting",recs:[]},
+  {t:"Atlas Bench vs other Atlassian consulting and managed services providers",v:"N/A",vc:-1,ph:"evaluation",prod:"Atlassian Consulting",recs:[]},
+  {t:"Which consulting firms specialize in enterprise collaboration tool strategy?",v:"0%",vc:0,ph:"consideration",prod:"Atlassian Consulting",recs:[{title:"Top Atlassian Managed Service Partners for Enterprises",type:"Listicle"},{title:"Atlassian Managed Services for Jira and Confluence",type:"Product"}]},
+  {t:"How do consulting and managed services impact collaboration tool adoption?",v:"0%",vc:0,ph:"awareness",prod:"Atlassian Consulting",recs:[{title:"Atlassian Accelerators for Jira Confluence Adoption",type:"Product"},{title:"Consulting Led Governance Model for Jira and Confluence",type:"Guide"},{title:"10 Managed Service Moves That Boost Jira Confluence Use",type:"Listicle"}]},
+  {t:"What are leading AI dev agents for automated code reviews and pull requests?",v:"0%",vc:0,ph:"consideration",prod:"Rovo Dev Agents",recs:[{title:"What's the best AI code review tool?",type:"Social"},{title:"Top 10 Rovo Dev Agent PR Use Cases for Bitbucket",type:"Listicle"},{title:"Implementing AI Code Review Agents in Bitbucket 2026",type:"Guide"}]},
+  {t:"How do AI code review agents change developer experience in Atlassian tools?",v:"0%",vc:0,ph:"awareness",prod:"Rovo Dev Agents",recs:[{title:"Difficulties with AI Coding that not enough people talk about",type:"Social"},{title:"AI coding agents are making developers faster — but are they also making review harder?",type:"Social"},{title:"Top 10 Rovo Dev Agent PR Use Cases for Bitbucket",type:"Listicle"},{title:"Implementing AI Code Review Agents in Bitbucket 2026",type:"Guide"}]},
+  {t:"Can Atlas Bench Rovo Dev Agents create pull requests directly from Jira?",v:"N/A",vc:-1,ph:"decision",prod:"Rovo Dev Agents",recs:[]},
+  {t:"Atlas Bench Rovo Dev Agents vs other AI developer automation tools",v:"N/A",vc:-1,ph:"evaluation",prod:"Rovo Dev Agents",recs:[]},
+  {t:"Does Atlas Bench Rovo connect to internal knowledge bases for search?",v:"N/A",vc:-1,ph:"decision",prod:"AI-Powered Assistant",recs:[]},
+  {t:"Which AI meeting assistant software summarizes notes and action items?",v:"0%",vc:0,ph:"consideration",prod:"AI-Powered Assistant",recs:[{title:"Top 10 Rovo Workflows for Meeting Notes and Risk Flags",type:"Listicle"}]},
+  {t:"Atlas Bench Rovo vs other AI project assistants for monitoring risks",v:"N/A",vc:-1,ph:"evaluation",prod:"AI-Powered Assistant",recs:[]},
+  {t:"Atlas Bench vs other Jira Service Management asset integration experts for CMDB",v:"N/A",vc:-1,ph:"evaluation",prod:"Jira Service Management",recs:[]},
+  {t:"Which partners offer Jira Service Management asset and CMDB integration?",v:"0%",vc:0,ph:"consideration",prod:"Jira Service Management",recs:[{title:"Jira Service Management CMDB/Asset Management recommendation",type:"Social"},{title:"Jira Implementation Consulting for JPD and JSM Assets",type:"Product"}]},
+  {t:"Does Atlas Bench link Jira Service Management assets directly to incidents?",v:"N/A",vc:-1,ph:"decision",prod:"Jira Service Management",recs:[]},
+  {t:"Does Atlas Bench handle Jira Product Discovery and Confluence integration?",v:"N/A",vc:-1,ph:"decision",prod:"Jira Product Discovery",recs:[]},
+  {t:"Atlas Bench vs other Jira Product Discovery setup partners for roadmap integration",v:"N/A",vc:-1,ph:"evaluation",prod:"Jira Product Discovery",recs:[]},
+  {t:"Which consulting services specialize in Jira Product Discovery implementation?",v:"4%",vc:4,ph:"consideration",prod:"Jira Product Discovery",recs:[]},
+  {t:"What causes strategy to get lost between project management tools?",v:"0%",vc:0,ph:"awareness",prod:"Teamwork And Strategy",recs:[{title:"9 Ways to Keep Strategy Visible Across Jira and Confluence",type:"Listicle"},{title:"Strategy Alignment Across Jira, JPD, and Confluence",type:"Guide"}]},
+  {t:"How do bundles of teamwork software improve cross-functional visibility?",v:"0%",vc:0,ph:"awareness",prod:"Teamwork And Strategy",recs:[{title:"Top Teamwork and Strategy Bundles for Visibility in 2026",type:"Listicle"},{title:"Managed Services for Atlassian Teamwork Collections",type:"Product"}]},
+  {t:"What makes it hard to align goals across collaboration software?",v:"0%",vc:0,ph:"awareness",prod:"Teamwork And Strategy",recs:[{title:"Why Goals Misalign Across Jira and Confluence",type:"Guide"}]},
+  {t:"Which collaboration software bundles connect goals, people, and project work?",v:"0%",vc:0,ph:"consideration",prod:"Teamwork And Strategy",recs:[{title:"Top Teamwork and Strategy Bundles for Visibility in 2026",type:"Listicle"},{title:"Managed Services for Atlassian Teamwork Collections",type:"Product"}]},
+  {t:"What are leading strategy execution software bundles with built-in AI?",v:"0%",vc:0,ph:"consideration",prod:"Teamwork And Strategy",recs:[]},
+  {t:"What is the best teamwork platform bundle for distributed teams?",v:"0%",vc:0,ph:"consideration",prod:"Teamwork And Strategy",recs:[]},
+  {t:"Which teamwork and strategy software bundles suit rapidly growing companies?",v:"0%",vc:0,ph:"consideration",prod:"Teamwork And Strategy",recs:[]},
+  {t:"Which AI-enhanced teamwork bundles integrate tightly with Atlassian tools?",v:"0%",vc:0,ph:"consideration",prod:"Teamwork And Strategy",recs:[]},
+  {t:"What is the best collaboration software bundle for leadership visibility?",v:"0%",vc:0,ph:"consideration",prod:"Teamwork And Strategy",recs:[]},
+  {t:"Top teamwork and strategy SaaS bundles for mid-sized organizations?",v:"0%",vc:0,ph:"consideration",prod:"Teamwork And Strategy",recs:[]}
+];
+
+const HUBSPOT_RECS=[
+  {title:"Jira Service Management (formally Jira Service Desk) CMDB/Assetmanagement recommendation",rectype:"Social amplification",ctype:"Social post"},
+  {title:"What's the best AI code review tool?",rectype:"Social amplification",ctype:"Social post"},
+  {title:"Difficulties with AI Coding every day that not enough people talk about",rectype:"Social amplification",ctype:"Social post"},
+  {title:"AI coding agents are making developers faster, but are they also making review harder?",rectype:"Social amplification",ctype:"Social post"},
+  {title:"Top Teamwork and Strategy Bundles for Visibility in 2026",rectype:"Net new content",ctype:"Listicle"},
+  {title:"Managed Services for Atlassian Teamwork Collections",rectype:"Net new content",ctype:"Product"},
+  {title:"Jira Implementation Consulting for JPD and JSM Assets",rectype:"Net new content",ctype:"Product"},
+  {title:"Top 10 Atlassian Analytics Dashboards for JSM KPIs",rectype:"Net new content",ctype:"Listicle"},
+  {title:"Top 10 Rovo Workflows for Meeting Notes and Risk Flags",rectype:"Net new content",ctype:"Listicle"},
+  {title:"Top 10 Rovo Dev Agent PR Use Cases for Bitbucket",rectype:"Net new content",ctype:"Listicle"},
+  {title:"Implementing AI Code Review Agents in Bitbucket 2026",rectype:"Net new content",ctype:"Guide"},
+  {title:"9 Ways to Keep Strategy Visible Across Jira and Confluence",rectype:"Net new content",ctype:"Listicle"},
+  {title:"Strategy Alignment Across Jira, JPD, and Confluence",rectype:"Net new content",ctype:"Guide"},
+  {title:"Requirements to Delivery Traceability in Jira Product Discovery",rectype:"Net new content",ctype:"Guide"},
+  {title:"How to Standardize Workflows in Jira and Confluence",rectype:"Net new content",ctype:"How-to"},
+  {title:"10 Controls to Govern Jira Confluence and JSM Workflows",rectype:"Net new content",ctype:"Listicle"},
+  {title:"Enterprise Workflow Governance for Jira and Confluence",rectype:"Net new content",ctype:"Guide"},
+  {title:"Atlassian Accelerators for Cloud Process Standardization",rectype:"Net new content",ctype:"Product"},
+  {title:"Why Enterprise Process Standardization Fails in Cloud Tools",rectype:"Net new content",ctype:"Educational"},
+  {title:"11 Expert-Led Atlassian Cloud Migration Services 2026",rectype:"Net new content",ctype:"Listicle"},
+  {title:"Enterprise Atlassian Cloud Migration Services for Teams",rectype:"Net new content",ctype:"Product"},
+  {title:"Enterprise Atlassian Cloud Migration Adoption Plan 2026",rectype:"Net new content",ctype:"Guide"},
+  {title:"12 Hidden Failure Points in Collaboration Migrations",rectype:"Net new content",ctype:"Listicle"},
+  {title:"Jira Product Discovery Setup and Integration Services",rectype:"Net new content",ctype:"Product"},
+  {title:"Integrate Jira Product Discovery with Jira and Confluence",rectype:"Net new content",ctype:"Guide"},
+  {title:"10 Jira Product Discovery Integrations for Enterprise Teams",rectype:"Net new content",ctype:"Listicle"},
+  {title:"Top Atlassian Managed Service Partners for Enterprises",rectype:"Net new content",ctype:"Listicle"},
+  {title:"Atlassian Managed Services for Jira and Confluence",rectype:"Net new content",ctype:"Product"},
+  {title:"Atlassian Accelerators for Jira Confluence Adoption",rectype:"Net new content",ctype:"Product"},
+  {title:"Consulting Led Governance Model for Jira and Confluence",rectype:"Net new content",ctype:"Guide"},
+  {title:"10 Managed Service Moves That Boost Jira Confluence Use",rectype:"Net new content",ctype:"Listicle"},
+  {title:"Enterprise Collaboration Tool Governance for Scale 2026",rectype:"Net new content",ctype:"Guide"},
+  {title:"10 Collaboration Tool Sprawl Warning Signs in 2026",rectype:"Net new content",ctype:"Listicle"},
+  {title:"Why Goals Misalign Across Jira and Confluence",rectype:"Net new content",ctype:"Guide"},
+  {title:"11 Causes of Incident Analytics Gaps in JSM Dashboards",rectype:"Net new content",ctype:"Listicle"},
+  {title:"Why Jira Service Management Incident Dashboards Misreport",rectype:"Net new content",ctype:"Educational"},
+  {title:"Audit Incident Dashboard Data in Jira Service Management",rectype:"Net new content",ctype:"Guide"},
+  {title:"11 Scoping Deliverables That Stop Cloud App Scope Creep",rectype:"Net new content",ctype:"Listicle"}
+];
+
+function tC(t){const s=(t||'').toLowerCase().replace(/[^a-z]/g,'');if(s==='listicle')return 'listicle';if(s==='guide')return 'guide';if(s==='howto'||s==='how-to')return 'howto';if(s==='product')return 'product';if(s==='educational')return 'educational';if(s==='social'||s==='socialpost')return 'social';return '';}
+function phC(p){return p==='awareness'?'ph-aw':p==='consideration'?'ph-co':p==='evaluation'?'ph-ev':'ph-de';}
+function phL(p){return p.charAt(0).toUpperCase()+p.slice(1);}
+function vC(v){return v===53?'hi':v>0?'lo':v===0?'z':'na';}
+
+function buildRecList(id,filter){
+  const el=document.getElementById(id);
+  const items=filter==='all'?HUBSPOT_RECS:HUBSPOT_RECS.filter(r=>filter==='netnew'?r.rectype==='Net new content':filter==='social'?r.rectype==='Social amplification':false);
+  el.innerHTML=items.map(r=>`<div class="rrow"><span class="rtrow">${r.title}</span><div class="rtypes"><span class="rtag ${r.rectype==='Net new content'?'netnew':'social'}">${r.rectype==='Net new content'?'Net new':'Social'}</span><span class="rtag ${tC(r.ctype)}">${r.ctype}</span></div></div><button class="ab sm" style="margin:3px 0 6px 4px;" onclick="sendPrompt('Write a full Atlas Bench blog post following the atlas-bench-blog-writing skill for: ${r.title.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">Draft ↗</button>`).join('');
+}
+buildRecList('rlist-all','all');buildRecList('rlist-netnew','netnew');buildRecList('rlist-social','social');
+
+function switchRcat(name,el){
+  document.querySelectorAll('.rsitem').forEach(i=>i.classList.remove('on'));
+  document.querySelectorAll('.rsitem .rsname').forEach(n=>n.classList.remove('on'));
+  document.querySelectorAll('.rcat').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');el.querySelector('.rsname').classList.add('on');
+  document.getElementById('rcat-'+name).classList.add('on');
+}
+
+let aP=-1;
+function renderP(filter){
+  const list=document.getElementById('plist');
+  list.innerHTML=PROMPTS.map((p,i)=>{
+    let show=true;
+    if(filter==='win') show=p.vc===53;
+    else if(filter==='some') show=p.vc>0&&p.vc<53;
+    else if(filter==='zero') show=p.vc===0;
+    else if(filter==='na') show=p.vc===-1;
+    else if(filter==='hasrec') show=p.recs&&p.recs.length>0;
+    const hr=p.recs&&p.recs.length>0;
+    return `<div class="pr${show?'':' hidden'}" id="pr-${i}" onclick="oP(${i})"><div class="ptxt"><i class="ti ti-chevron-right" id="pic-${i}" aria-hidden="true"></i>${p.star?'⭐ ':''}${hr?'<span style="color:#0F6E56;font-size:11px;margin-right:3px;">●</span>':''}${p.t}</div><div class="pv ${vC(p.vc)}">${p.v}</div><div class="pp"><span class="${phC(p.ph)}">${phL(p.ph)}</span></div></div>`;
+  }).join('');
+}
+
+function filterP(f,el){document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('on'));el.classList.add('on');aP=-1;document.getElementById('det').classList.remove('on');renderP(f);}
+
+function oP(i){
+  const p=PROMPTS[i];const det=document.getElementById('det');
+  if(aP===i){aP=-1;det.classList.remove('on');const ic=document.getElementById('pic-'+i);if(ic)ic.style.transform='';return;}
+  document.querySelectorAll('.pr i').forEach(ic=>ic.style.transform='');
+  aP=i;const ic=document.getElementById('pic-'+i);if(ic)ic.style.transform='rotate(90deg)';
+  const rH=p.recs&&p.recs.length?p.recs.map(r=>`<div class="ri"><span class="rtitle">${r.title}</span><span class="rtag ${tC(r.type)}">${r.type}</span></div>`).join(''):'<div style="font-size:13px;color:var(--color-text-secondary);padding:6px 0;">No content titles generated yet for this prompt.</div>';
+  det.innerHTML=`
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px;">
+      <div style="font-size:14px;font-weight:500;color:var(--color-text-primary);line-height:1.4;">${p.star?'⭐ ':''}${p.t}</div>
+      <button onclick="aP=-1;document.getElementById('det').classList.remove('on');document.querySelectorAll('.pr i').forEach(ic=>ic.style.transform='');" style="background:none;border:none;cursor:pointer;color:var(--color-text-secondary);font-size:18px;flex-shrink:0;">×</button>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+      <span class="${phC(p.ph)}">${phL(p.ph)}</span>
+      <span style="font-size:12px;background:var(--color-background-primary);padding:2px 8px;border-radius:20px;color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);">${p.prod}</span>
+      <span style="font-size:12px;padding:2px 8px;border-radius:20px;background:${p.vc===53?'#E1F5EE':p.vc>0?'#FAEEDA':'#FAECE7'};color:${p.vc===53?'#085041':p.vc>0?'#854F0B':'#993C1D'};">Visibility: ${p.v}</span>
+    </div>
+    <div class="dtabs">
+      <div class="dta" onclick="gDT('an',this,${i})">Analysis</div>
+      <div class="dta" onclick="gDT('ans',this,${i})">Answers</div>
+      <div class="dta on" onclick="gDT('re',this,${i})">Recommendations</div>
+    </div>
+    <div id="dp-an-${i}" class="dpn" style="padding-top:8px;">
+      <strong style="color:var(--color-text-primary);">Buying stage:</strong> ${phL(p.ph)}<br>
+      <strong style="color:var(--color-text-primary);">Current visibility:</strong> ${p.v}<br>
+      <strong style="color:var(--color-text-primary);">Product area:</strong> ${p.prod}<br><br>
+      ${p.vc===53?'<span style="color:#085041;font-weight:500;">✓ Best performing prompt at 53% visibility. Use this formula as the model for all others.</span>':p.vc>0?'<span style="color:#854F0B;">Some visibility — content exists but needs Atlas Bench named more prominently in title, H1, and first paragraph.</span>':p.vc===0?'<span style="color:#993C1D;">0% visibility — write a dedicated post directly answering this question. See Recommendations tab.</span>':'<span style="color:#BA7517;">Not yet tracked — beyond your free trial limit. Upgrade or swap a lower-priority prompt to activate.</span>'}
+    </div>
+    <div id="dp-ans-${i}" class="dpn" style="padding-top:8px;">
+      <div class="ib"><div class="it b">How to use the Answers tab in HubSpot</div><div class="ix b">In HubSpot, click this prompt → Answers tab. See the exact AI response from each platform. Look for which competitors are named, which sources are cited, and whether Atlas Bench appears. This tells you exactly what to write to displace the current answer.</div></div>
+    </div>
+    <div id="dp-re-${i}" class="dpn on" style="padding-top:4px;">${rH}
+      ${p.recs&&p.recs.length?`<button class="ab" style="margin-top:8px;" onclick="sendPrompt('Write a full Atlas Bench blog post following the atlas-bench-blog-writing skill for: ${p.recs[0].title.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">Draft "${p.recs[0].title.substring(0,40)}..." ↗</button>`:`<button class="ab" style="margin-top:8px;" onclick="sendPrompt('What should Atlas Bench write to win AI visibility for this prompt: ${p.t.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">Ask Claude what to write ↗</button>`}
+    </div>`;
+  det.classList.add('on');
+  setTimeout(()=>{const pr=document.getElementById('pr-'+i);if(pr)pr.scrollIntoView({behavior:'smooth',block:'nearest'});},60);
+}
+
+function gDT(name,el,i){
+  const det=document.getElementById('det');
+  det.querySelectorAll('.dta').forEach(t=>t.classList.remove('on'));
+  det.querySelectorAll('.dpn').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');document.getElementById(`dp-${name}-${i}`).classList.add('on');
+}
+function gT(name,el){
+  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(t=>t.classList.remove('on'));
+  document.getElementById('t-'+name).classList.add('on');el.classList.add('on');
+}
+function gS(name,el,tab){
+  const parent=document.getElementById('t-'+tab);
+  parent.querySelectorAll('.sp').forEach(p=>p.classList.remove('on'));
+  parent.querySelectorAll('.st').forEach(t=>t.classList.remove('on'));
+  document.getElementById('s-'+name).classList.add('on');el.classList.add('on');
+}
+
+renderP('all');
+
+const allRecs=[];
+PROMPTS.forEach(p=>{if(p.recs&&p.recs.length){p.recs.forEach(r=>{if(r.type!=='Social'){allRecs.push({...r,prompt:p.t,prod:p.prod,ph:p.ph});}});}});
+document.getElementById('qlist').innerHTML=`<div class="qgrid">${allRecs.map(r=>`
+  <div class="qcard">
+    <span class="rtag ${tC(r.type)}" style="margin-bottom:6px;display:inline-block;">${r.type}</span>
+    <div class="qtitle">${r.title}</div>
+    <div class="qprompt" style="margin-top:3px;">Answers: "${r.prompt.substring(0,65)}${r.prompt.length>65?'...':''}"</div>
+    <div style="margin-top:5px;display:flex;gap:5px;flex-wrap:wrap;">
+      <span class="${phC(r.ph)}">${phL(r.ph)}</span>
+      <span style="font-size:12px;color:var(--color-text-secondary);">${r.prod}</span>
+    </div>
+    <button class="ab" style="margin-top:7px;" onclick="sendPrompt('Write a full Atlas Bench blog post following the atlas-bench-blog-writing skill for: ${r.title.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">Draft ↗</button>
+  </div>`).join('')}</div>`;
+
+const L=['Apr 27','May 4','May 11'];
+const chartOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,ticks:{callback:v=>v+'%',font:{size:11},color:'#888'},grid:{color:'rgba(0,0,0,0.05)'}},x:{ticks:{font:{size:11},color:'#888'},grid:{display:false}}}};
+
+new Chart(document.getElementById('vc'),{type:'line',data:{labels:L,datasets:[{label:'ChatGPT',data:[0.5,0.5,0.6],borderColor:'#D85A30',backgroundColor:'transparent',pointBackgroundColor:'#D85A30',tension:.3},{label:'Gemini',data:[0.8,1.1,1.4],borderColor:'#1D9E75',backgroundColor:'transparent',pointBackgroundColor:'#1D9E75',tension:.3,borderDash:[4,3]},{label:'Perplexity',data:[0.6,0.7,0.8],borderColor:'#7F77DD',backgroundColor:'transparent',pointBackgroundColor:'#7F77DD',tension:.3,borderDash:[2,2]}]},options:{...chartOpts,scales:{...chartOpts.scales,y:{...chartOpts.scales.y,max:5}}}});
+
+new Chart(document.getElementById('sc'),{type:'line',data:{labels:L,datasets:[{label:'ChatGPT',data:[50,50,10],borderColor:'#D85A30',backgroundColor:'transparent',pointBackgroundColor:'#D85A30',tension:.3},{label:'Gemini',data:[80,80,80],borderColor:'#1D9E75',backgroundColor:'transparent',pointBackgroundColor:'#1D9E75',tension:.3,borderDash:[4,3]},{label:'Perplexity',data:[55,60,65],borderColor:'#7F77DD',backgroundColor:'transparent',pointBackgroundColor:'#7F77DD',tension:.3,borderDash:[2,2]}]},options:{...chartOpts,scales:{...chartOpts.scales,y:{...chartOpts.scales.y,max:100}}}});
+
+new Chart(document.getElementById('cc'),{type:'line',data:{labels:L,datasets:[{label:'Atlas Bench',data:[2.0,2.0,2.1],borderColor:'#185FA5',backgroundColor:'transparent',pointBackgroundColor:'#185FA5',tension:.3},{label:'Eficode',data:[2.9,4.1,6.1],borderColor:'#1D9E75',backgroundColor:'transparent',pointBackgroundColor:'#1D9E75',tension:.3,borderDash:[4,3]},{label:'Adaptavist',data:[1.9,1.7,2.0],borderColor:'#7F77DD',backgroundColor:'transparent',pointBackgroundColor:'#7F77DD',tension:.3,borderDash:[2,2]},{label:'ServiceRocket',data:[1.8,1.6,1.4],borderColor:'#D85A30',backgroundColor:'transparent',pointBackgroundColor:'#D85A30',tension:.3,borderDash:[5,3]}]},options:chartOpts});
+
+new Chart(document.getElementById('dcr'),{type:'line',data:{labels:['Apr 27','May 4'],datasets:[{label:'atlas-bench.com',data:[10.5,16.5],borderColor:'#7F77DD',backgroundColor:'transparent',pointBackgroundColor:'#7F77DD',tension:.3,borderWidth:2},{label:'adaptavist.com',data:[0.5,0.4],borderColor:'#D85A30',backgroundColor:'transparent',pointBackgroundColor:'#D85A30',tension:.3,borderDash:[4,3]}]},options:chartOpts});
+
+new Chart(document.getElementById('bmr'),{type:'line',data:{labels:['Apr 27','May 4'],datasets:[{label:'Adaptavist',data:[10.0,5.5],borderColor:'#D85A30',backgroundColor:'transparent',pointBackgroundColor:'#D85A30',tension:.3,borderWidth:2},{label:'Atlas Bench',data:[1.0,1.0],borderColor:'#7F77DD',backgroundColor:'transparent',pointBackgroundColor:'#7F77DD',tension:.3,borderDash:[4,3]}]},options:chartOpts});
+
+new Chart(document.getElementById('ctype'),{type:'bar',data:{labels:['Apr 27','May 4'],datasets:[{label:'Blog',data:[38,40],backgroundColor:'#D85A30'},{label:'Comparison',data:[12,11],backgroundColor:'#1D9E75'},{label:'Documentation',data:[15,14],backgroundColor:'#7F77DD'},{label:'Educational',data:[12,13],backgroundColor:'#BA7517'},{label:'Other',data:[23,22],backgroundColor:'#B4B2A9'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,ticks:{font:{size:11},color:'#888'},grid:{display:false}},y:{stacked:true,min:0,max:100,ticks:{callback:v=>v+'%',font:{size:11},color:'#888'},grid:{color:'rgba(0,0,0,0.05)'}}}}});
+
+new Chart(document.getElementById('cchan'),{type:'bar',data:{labels:['Apr 27','May 4'],datasets:[{label:'Earned',data:[75,74],backgroundColor:'#EC4899'},{label:'Owned',data:[10,11],backgroundColor:'#BA7517'},{label:'Peer',data:[6,6],backgroundColor:'#7F77DD'},{label:'Competitor',data:[5,5],backgroundColor:'#1D9E75'},{label:'Other',data:[4,4],backgroundColor:'#B4B2A9'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,ticks:{font:{size:11},color:'#888'},grid:{display:false}},y:{stacked:true,min:0,max:100,ticks:{callback:v=>v+'%',font:{size:11},color:'#888'},grid:{color:'rgba(0,0,0,0.05)'}}}}});
+</script>
